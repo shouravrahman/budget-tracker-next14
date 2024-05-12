@@ -4,6 +4,8 @@ import { registerSchema } from "@/schemas"
 import { z } from "zod"
 import db from '@/lib/db'
 import { getUserByEmail } from '@/data/user'
+import { generateVerificationToken } from '@/lib/tokens'
+import { sendVerificationMail } from '@/lib/mail'
 
 export const register = async (data: z.infer<typeof registerSchema>) => {
 
@@ -29,8 +31,12 @@ export const register = async (data: z.infer<typeof registerSchema>) => {
          name, email, password: hashedPassword
       }
    })
-   // todo send verification
+   // create verification token
+   const verificationToken = await generateVerificationToken(email)
 
-   return { success: "User created" }
+   await sendVerificationMail(verificationToken.email, verificationToken.token)
+
+
+   return { success: "Verification Email Sent" }
 
 }
