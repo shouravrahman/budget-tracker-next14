@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Header } from "./header";
+import { AuthHeader } from "./auth-header";
 import { Social } from "./social";
 import { BackButton } from "./back-button";
 
-interface AuthCardProps {
+interface AuthWrapperProps {
   children: React.ReactNode;
   headerLabel: string;
   backButtonLabel: string;
@@ -12,17 +12,17 @@ interface AuthCardProps {
   showSocial?: boolean;
 }
 
-export const AuthCard = ({
+export const AuthWrapper = ({
   children,
   headerLabel,
   backButtonLabel,
   backButtonHref,
   showSocial,
-}: AuthCardProps) => {
+}: AuthWrapperProps) => {
   return (
     <Card className="max-w-md w-full">
       <CardHeader>
-        <Header label={headerLabel} />
+        <AuthHeader label={headerLabel} />
       </CardHeader>
       <CardContent>{children}</CardContent>
       {showSocial && (
@@ -30,9 +30,9 @@ export const AuthCard = ({
           <Social />
         </CardFooter>
       )}
-       <CardFooter>
-         <BackButton href={backButtonHref} label={backButtonLabel}/>
-        </CardFooter>
+      <CardFooter>
+        <BackButton href={backButtonHref} label={backButtonLabel} />
+      </CardFooter>
     </Card>
   );
 };

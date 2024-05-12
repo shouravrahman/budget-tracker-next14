@@ -1,4 +1,4 @@
-export const Header = ({ label }: { label: string }) => {
+export const AuthHeader = ({ label }: { label: string }) => {
   return (
     <div className="w-full flex flex-col gap-y-4 items-center">
       <h1 className="text-3xl font-semibold">☢Auth</h1>

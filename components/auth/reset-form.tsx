@@ -2,7 +2,7 @@
 import React, { useState, useTransition } from "react";
 import { AuthWrapper } from "./auth-wrapper";
 import { useForm } from "react-hook-form";
-import { registerSchema } from "@/schemas";
+import { resetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -17,40 +17,39 @@ import { z } from "zod";
 import { Button } from "../ui/button";
 import FormError from "./form-error";
 import FormSuccess from "./form-success";
-import { register } from "@/actions/register";
+import { login } from "@/actions/login";
+import { reset } from "@/actions/reset";
 
-export const RegisterForm = () => {
+export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   //useTransition Hook Manages the loading/success transition state (isPending) to visually indicate form submission progress (e.g., showing a loading spinner).
   const [isPending, startTransition] = useTransition();
 
   // setup react hook form with zod
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<z.infer<typeof resetSchema>>({
+    resolver: zodResolver(resetSchema),
     defaultValues: {
       email: "",
-      password: "",
-      name: "",
     },
   });
   // onsubmit function
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+  const onSubmit = (data: z.infer<typeof resetSchema>) => {
     setError("");
     setSuccess("");
+
     startTransition(() => {
-      register(data).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+      reset(data).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
       });
     });
   };
   return (
     <AuthWrapper
-      headerLabel="Welcome"
-      backButtonHref="/auth/login"
-      backButtonLabel="Already have an account?"
-      showSocial
+      headerLabel="Forgot your password?"
+      backButtonHref="/auth/register"
+      backButtonLabel="Back to login"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -74,44 +73,6 @@ export const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            {/* name */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      {...field}
-                      disabled={isPending}
-                      placeholder="John doe"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* password */}
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      {...field}
-                      disabled={isPending}
-                      placeholder="***********"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
           {/* form error */}
           <FormError message={error} />
@@ -119,7 +80,7 @@ export const RegisterForm = () => {
           <FormSuccess message={success} />
           {/* submit button */}
           <Button className="w-full" type="submit" disabled={isPending}>
-            Create an account
+            Send Reset Link
           </Button>
         </form>
       </Form>
