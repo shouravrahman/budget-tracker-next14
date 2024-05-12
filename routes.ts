@@ -4,7 +4,8 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-   "/"
+   "/",
+   "/auth/verify-email"
 ];
 
 /**
@@ -13,9 +14,11 @@ export const publicRoutes = [
  */
 export const authRoutes = [
    "/dashboard",
-   "/profile",
+   "/auth/error",
    "/auth/login",
-   "/auth/register"
+   "/auth/register",
+   "/auth/reset",
+   "/auth/new-password",
 ];
 /**
  * The path to which the user will be redirected after authentication.
